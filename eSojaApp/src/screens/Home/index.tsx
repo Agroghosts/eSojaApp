@@ -149,7 +149,7 @@ export const Home: React.FC<HomeScreenRouteProps> = ({ navigation }) => {
             </MenuCardContainer>
             <MenuCardContainer>
               <MenuCard
-                onPress={() => handlerCardMenuClick('ImageUpload')}
+                onPress={() => handlerCardMenuClick('CreatePlotStepSix')}
                 title={translate('home.Images')}
                 icon="camera-plus"
               />

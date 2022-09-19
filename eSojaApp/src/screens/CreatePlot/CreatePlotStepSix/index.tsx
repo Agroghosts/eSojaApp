@@ -1,9 +1,8 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-import { ScrollView } from 'react-native';
+import { ScrollView, Switch } from 'react-native';
 import * as yup from 'yup';
-import StepSix from '../../../assets/plot-steps-images/StepSample.png';
 import { Button } from '../../../components/Button';
 import { StepIndicator } from '../../../components/StepIndicator';
 import { TextInput } from '../../../components/TextInput';
@@ -14,10 +13,11 @@ import { translate } from '../../../data/I18n';
 import {
   Container,
   FormContainer,
-  HelperImageContainer,
   NextStepButton,
-  StepSixHelperImage
 } from './styles';
+import { PictureInput } from '../../../components/PictureInput';
+import { useUpload } from '../../../hooks/useUpload';
+import { Text } from 'react-native-paper';
 
 const userLogin = yup.object().shape({
   grainsPlant1: yup
@@ -67,6 +67,19 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
     saveStep(sample);
     navigation.navigate('CreatePlotStepSeven');
   };
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled((previousState: any) => !previousState);
+
+  const [isEnabledB, setIsEnabledB] = useState(false);
+  const toggleSwitchB = () => setIsEnabledB((previousState: any) => !previousState);
+
+  const [image, setImage] = useState('');
+  const { selectImage } = useUpload();
+  const handleSelectImage = async () => {
+    const uri = await selectImage();
+    setImage(uri);
+  };
+
 
   return (
     <ScrollView>
@@ -77,18 +90,43 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
         />
         <StepIndicator step={1} indicator={4} />
         <FormContainer>
-          <HelperImageContainer>
-            <StepSixHelperImage source={StepSix} resizeMode="contain" />
-          </HelperImageContainer>
-          <TextInput
-            label="CreatePlotStepSix.sampleA"
-            placeholder={translate('CreatePlotStepSix.samplePlaceholder')}
-            icon="check-square"
-            name="grainsPlant1"
-            control={control}
-            errorMessage={errors?.grainsPlant1?.message}
-          />
-          <TextInput
+
+          <Switch
+        trackColor={{ false: "#767577", true: "#81b0ff" }}
+        thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+        ios_backgroundColor="#3e3e3e"
+        onValueChange={toggleSwitch}
+        value={isEnabled}
+        />
+         <Text> {translate('CreatePlotStepSix.labelSwitch')} </Text>
+
+          {!isEnabled ? (
+              <TextInput
+              placeholder={translate('CreatePlotStepSix.samplePlaceholder')}
+              label="CreatePlotStepSix.sampleA"
+              icon="check-square"
+              name="grainsPlant1"
+              control={control}
+              errorMessage={errors?.grainsPlant1?.message}
+            />
+          ) : (<PictureInput
+          placeholder="newProperty.propertyPictureLabel"
+          updatePictureLabel="newProperty.propertyUpdatePictureLabel"
+          onPress={handleSelectImage}
+          uri={image}
+        />)
+          }
+          
+          <Switch
+        trackColor={{ false: "#767577", true: "#81b0ff" }}
+        thumbColor={isEnabledB ? "#f5dd4b" : "#f4f3f4"}
+        ios_backgroundColor="#3e3e3e"
+        onValueChange={toggleSwitchB}
+        value={isEnabledB}
+        />
+         <Text> {translate('CreatePlotStepSix.labelSwitch')} </Text>
+        {!isEnabledB ? (
+            <TextInput
             label="CreatePlotStepSix.sampleB"
             placeholder={translate('CreatePlotStepSix.samplePlaceholder')}
             icon="check-square"
@@ -96,7 +134,17 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
             control={control}
             errorMessage={errors?.grainsPlant2?.message}
           />
-          <TextInput
+        ) : (
+                
+                <PictureInput
+                  placeholder="newProperty.propertyPictureLabel"
+                  updatePictureLabel="newProperty.propertyUpdatePictureLabel"
+                  onPress={handleSelectImage}
+                  uri={image}
+                />
+                
+        )}
+        <TextInput
             label="CreatePlotStepSix.sampleDescription"
             placeholder={translate(
               'CreatePlotStepSix.sampleDescriptionPlaceholder'
