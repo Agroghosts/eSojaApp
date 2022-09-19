@@ -15,7 +15,8 @@ export default {
           required: 'Quantidade é obrigatória',
           min: 'Quantidade de grãos não pode ser "ZERO"'
         }
-      }
+      },
+      labelSwitch: 'Inserção manual'
     }
   },
   en: {
@@ -34,7 +35,8 @@ export default {
           required: 'Quantity is required',
           min: 'Grain quantity cannot be "ZERO"'
         }
-      }
+      },
+      labelSwitch: 'Manual entry'
     }
   }
 };

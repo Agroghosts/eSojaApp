@@ -87,6 +87,8 @@ const AuthProvider: React.FC<AuthContextProps> = ({ children }) => {
 
         await storeUser(user, token);
       } catch (error) {
+        console.log(JSON.stringify(error));
+        
         Alert.alert(
           'Erro',
           'Não foi possível fazer o login, tente novamente mais tarde'

@@ -8,6 +8,9 @@ import { BackHandler } from 'react-native';
 import { useTheme } from 'styled-components';
 import { NavigatorProps } from '.';
 import { AuthRoutesParams } from '../data/routes/auth';
+import { Home } from '../screens/Home';
+import { NewProperty } from '../screens/NewProperty';
+import { Properties } from '../screens/Properties';
 import { SignIn } from '../screens/SignIn';
 import { SignUp } from '../screens/SignUp';
 
@@ -45,19 +48,10 @@ export const AuthRoutes: React.FC<NavigatorProps> = ({ screenOptions }) => {
   );
 
   return (
-    <Stack.Navigator
-      screenOptions={{
-        ...screenOptions,
-        headerShown: true,
-        headerTintColor: theme.colors.white
-      }}
-    >
-      <Stack.Screen
-        name="SignIn"
-        component={SignIn}
-        options={{ headerShown: false }}
-      />
+    <Stack.Navigator screenOptions={{ ...screenOptions, headerShown: true, headerTintColor: theme.colors.white }} >
+      <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
       <Stack.Screen name="SignUp" component={SignUp} options={options} />
+      <Stack.Screen name="Index" component={Home} options={options} />
     </Stack.Navigator>
   );
 };
