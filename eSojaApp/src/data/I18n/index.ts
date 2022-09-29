@@ -12,6 +12,7 @@ import CreatePlotStepThree from './CreatePlotStepThree';
 import CreatePlotStepTwo from './CreatePlotStepTwo';
 import home from './home';
 import newProperties from './newProperties';
+import newImage from './newImage';
 import plots from './plots';
 import properties from './properties';
 import quotation from './quotation';
@@ -20,6 +21,7 @@ import signUp from './signUp';
 import validators from './validators';
 import weather from './weather';
 import statistics from './statistics';
+import imageUpload from './imageUpload';
 
 interface LanguageProps {
   [key: string]: {
@@ -36,8 +38,10 @@ export const i18nConfig = () => {
       ...home.pt,
       ...weather.pt,
       ...properties.pt,
+      ...imageUpload.pt,
       ...plots.pt,
       ...validators.pt,
+      ...newImage.pt,
       ...newProperties.pt,
       ...signUp.pt,
       ...CreatePlotStepEight.pt,
@@ -57,8 +61,10 @@ export const i18nConfig = () => {
       ...home.en,
       ...weather.en,
       ...properties.en,
+      ...imageUpload.en,
       ...plots.en,
       ...validators.en,
+      ...newImage.en,
       ...newProperties.en,
       ...signUp.en,
       ...CreatePlotStepEight.en,

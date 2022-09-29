@@ -19,6 +19,7 @@ import { CreatePlotStepSix } from '../screens/CreatePlot/CreatePlotStepSix';
 import { CreatePlotStepThree } from '../screens/CreatePlot/CreatePlotStepThree';
 import { CreatePlotStepTwo } from '../screens/CreatePlot/CreatePlotStepTwo';
 import { Home } from '../screens/Home';
+import { ImageUpload } from '../screens/ImageUpload';
 import { NewProperty } from '../screens/NewProperty';
 import { PlotDetail } from '../screens/PlotDetail';
 import { Plots } from '../screens/Plots';
@@ -158,6 +159,11 @@ export const AppRoutes: React.FC<NavigatorProps> = ({ screenOptions }) => {
       <Stack.Screen
         name="NewProperty"
         component={NewProperty}
+        options={options}
+      />
+      <Stack.Screen
+        name="ImageUpload"
+        component={ImageUpload}
         options={options}
       />
       <Stack.Screen name="Quotation" component={Quotation} options={options} />

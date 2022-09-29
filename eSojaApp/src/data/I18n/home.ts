@@ -7,6 +7,7 @@ export default {
       properties: 'Propriedades',
       plots: 'Talhões',
       statistics: 'Estatísticas',
+      Images: 'Imagens',
       homeLeaveAlert: 'Sair',
       homeLeaveAlertDescription:
         'Ao sair da aplicação todos os dados não sincronizados serão perdidos, você confirma esta ação?',
@@ -26,6 +27,7 @@ export default {
       properties: 'Properties',
       plots: 'Plots',
       statistics: 'Statistics',
+      Images: 'Images',
       homeLeaveAlert: 'Sign out',
       homeLeaveAlertDescription:
         'When exiting the application all unsynchronized data will be lost, you confirm this action?',

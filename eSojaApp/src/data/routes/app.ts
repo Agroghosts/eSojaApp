@@ -7,10 +7,12 @@ export type AppRoutesParams = {
   PlotDetail: {
     plotId: string;
   };
+  ImageUpload: undefined;
   Properties: undefined;
   PropertyDetail: {
     propertyId: string;
   };
+  NewImage: undefined;
   NewProperty: undefined;
   Quotation: {
     selectedPage: string;
@@ -55,6 +57,11 @@ export type CreatePlotScreenRouteProps = NativeStackScreenProps<
   'CreatePlot'
 >;
 
+export type ImageUploadScreenRouteProps = NativeStackScreenProps<
+  AppRoutesParams,
+  'ImageUpload'
+>;
+
 export type PropertiesScreenRouteProps = NativeStackScreenProps<
   AppRoutesParams,
   'Properties'
@@ -63,6 +70,11 @@ export type PropertiesScreenRouteProps = NativeStackScreenProps<
 export type PropertyDetailScreenRouteProps = NativeStackScreenProps<
   AppRoutesParams,
   'PropertyDetail'
+>;
+
+export type NewImageScreenRouteProps = NativeStackScreenProps<
+  AppRoutesParams,
+  'NewImage'
 >;
 
 export type NewPropertyScreenRouteProps = NativeStackScreenProps<
