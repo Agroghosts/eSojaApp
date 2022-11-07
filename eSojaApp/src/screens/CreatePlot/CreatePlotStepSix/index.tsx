@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-import { ScrollView, Switch } from 'react-native';
+import { Alert, ScrollView, Switch } from 'react-native';
 import * as yup from 'yup';
 import { Button } from '../../../components/Button';
 import { StepIndicator } from '../../../components/StepIndicator';
@@ -18,6 +18,7 @@ import {
 import { PictureInput } from '../../../components/PictureInput';
 import { useUpload } from '../../../hooks/useUpload';
 import { Text } from 'react-native-paper';
+import axios from 'axios';
 
 const userLogin = yup.object().shape({
   grainsPlant1: yup
@@ -75,9 +76,27 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
 
   const [image, setImage] = useState('');
   const { selectImage } = useUpload();
+  const [ numberPods, setNumberPods] = useState(''); 
+  const quality = async () => {
+    
+  }
   const handleSelectImage = async () => {
     const uri = await selectImage();
+
+    console.log();
+    alert(uri);
+    console.log(image);
     setImage(uri);
+
+    let formData = new FormData();
+    formData.append('numberPods', image);
+    await axios.post('http://localhost:5000/getPods', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+
+  }).then(res => {
+      setNumberPods(res.data.photo.photo);
+  })
+
   };
 
 
