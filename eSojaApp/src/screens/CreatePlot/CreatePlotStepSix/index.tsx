@@ -99,6 +99,7 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
             onValueChange={toggleSwitch}
             value={isEnabled}
           />
+
           <Text> {translate('CreatePlotStepSix.labelSwitch')} </Text>
 
           {!isEnabled ? (
@@ -110,13 +111,38 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
               control={control}
               errorMessage={errors?.grainsPlant1?.message}
             />
-          ) : (<PictureInput
-            placeholder="newProperty.propertyPictureLabel"
-            updatePictureLabel="newProperty.propertyUpdatePictureLabel"
-            onPress={handleSelectImage}
-            uri={image}
-          />)
-          }
+          ) : (
+            <View>
+              <PictureInput
+                placeholder="newProperty.propertyPictureLabel"
+                updatePictureLabel="newProperty.propertyUpdatePictureLabel"
+                onPress={handleSelectImage}
+                uri={image}
+              />
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                  Alert.alert("Modal has been closed.");
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <Text style={styles.modalText}>Modal deu certo!</Text>
+                    <Pressable
+                      style={[styles.button, styles.buttonClose]}
+                      onPress={() => setModalVisible(!modalVisible)}
+                    >
+                      <Text style={styles.textStyle}>Fechar Modal</Text>
+                    </Pressable>
+                  </View>
+                </View>
+              </Modal>
+
+            </View>
+          )}
 
           <Switch
             trackColor={{ false: "#767577", true: "#81b0ff" }}
@@ -126,6 +152,7 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
             value={isEnabledB}
           />
           <Text> {translate('CreatePlotStepSix.labelSwitch')} </Text>
+
           {!isEnabledB ? (
             <TextInput
               label="CreatePlotStepSix.sampleB"
@@ -172,12 +199,12 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
           >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <Text style={styles.modalText}>Hello World!</Text>
+                <Text style={styles.modalText}>Modal deu certo!</Text>
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
                   onPress={() => setModalVisible(!modalVisible)}
                 >
-                  <Text style={styles.textStyle}>Hide Modal</Text>
+                  <Text style={styles.textStyle}>Fechar Modal</Text>
                 </Pressable>
               </View>
             </View>
@@ -186,7 +213,7 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
             style={[styles.button, styles.buttonOpen]}
             onPress={() => setModalVisible(true)}
           >
-            <Text style={styles.textStyle}>Show Modal</Text>
+            <Text style={styles.textStyle}>Abrir Modal</Text>
           </Pressable>
 
         </FormContainer>
