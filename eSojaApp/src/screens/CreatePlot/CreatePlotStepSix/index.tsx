@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-import { ScrollView, Switch } from 'react-native';
+import { ScrollView, Switch, StyleSheet, Alert, Modal, Pressable, View } from 'react-native';
 import * as yup from 'yup';
 import { Button } from '../../../components/Button';
 import { StepIndicator } from '../../../components/StepIndicator';
@@ -80,6 +80,7 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
     setImage(uri);
   };
 
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <ScrollView>
@@ -92,16 +93,16 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
         <FormContainer>
 
           <Switch
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleSwitch}
-        value={isEnabled}
-        />
-         <Text> {translate('CreatePlotStepSix.labelSwitch')} </Text>
+            trackColor={{ false: "#767577", true: "#81b0ff" }}
+            thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={toggleSwitch}
+            value={isEnabled}
+          />
+          <Text> {translate('CreatePlotStepSix.labelSwitch')} </Text>
 
           {!isEnabled ? (
-              <TextInput
+            <TextInput
               placeholder={translate('CreatePlotStepSix.samplePlaceholder')}
               label="CreatePlotStepSix.sampleA"
               icon="check-square"
@@ -110,41 +111,41 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
               errorMessage={errors?.grainsPlant1?.message}
             />
           ) : (<PictureInput
-          placeholder="newProperty.propertyPictureLabel"
-          updatePictureLabel="newProperty.propertyUpdatePictureLabel"
-          onPress={handleSelectImage}
-          uri={image}
-        />)
+            placeholder="newProperty.propertyPictureLabel"
+            updatePictureLabel="newProperty.propertyUpdatePictureLabel"
+            onPress={handleSelectImage}
+            uri={image}
+          />)
           }
-          
+
           <Switch
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={isEnabledB ? "#f5dd4b" : "#f4f3f4"}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleSwitchB}
-        value={isEnabledB}
-        />
-         <Text> {translate('CreatePlotStepSix.labelSwitch')} </Text>
-        {!isEnabledB ? (
-            <TextInput
-            label="CreatePlotStepSix.sampleB"
-            placeholder={translate('CreatePlotStepSix.samplePlaceholder')}
-            icon="check-square"
-            name="grainsPlant2"
-            control={control}
-            errorMessage={errors?.grainsPlant2?.message}
+            trackColor={{ false: "#767577", true: "#81b0ff" }}
+            thumbColor={isEnabledB ? "#f5dd4b" : "#f4f3f4"}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={toggleSwitchB}
+            value={isEnabledB}
           />
-        ) : (
-                
-                <PictureInput
-                  placeholder="newProperty.propertyPictureLabel"
-                  updatePictureLabel="newProperty.propertyUpdatePictureLabel"
-                  onPress={handleSelectImage}
-                  uri={image}
-                />
-                
-        )}
-        <TextInput
+          <Text> {translate('CreatePlotStepSix.labelSwitch')} </Text>
+          {!isEnabledB ? (
+            <TextInput
+              label="CreatePlotStepSix.sampleB"
+              placeholder={translate('CreatePlotStepSix.samplePlaceholder')}
+              icon="check-square"
+              name="grainsPlant2"
+              control={control}
+              errorMessage={errors?.grainsPlant2?.message}
+            />
+          ) : (
+
+            <PictureInput
+              placeholder="newProperty.propertyPictureLabel"
+              updatePictureLabel="newProperty.propertyUpdatePictureLabel"
+              onPress={handleSelectImage}
+              uri={image}
+            />
+
+          )}
+          <TextInput
             label="CreatePlotStepSix.sampleDescription"
             placeholder={translate(
               'CreatePlotStepSix.sampleDescriptionPlaceholder'
@@ -159,8 +160,81 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
               onPress={handleSubmit(handleSubmitStepSix)}
             />
           </NextStepButton>
+
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalText}>Hello World!</Text>
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  <Text style={styles.textStyle}>Hide Modal</Text>
+                </Pressable>
+              </View>
+            </View>
+          </Modal>
+          <Pressable
+            style={[styles.button, styles.buttonOpen]}
+            onPress={() => setModalVisible(true)}
+          >
+            <Text style={styles.textStyle}>Show Modal</Text>
+          </Pressable>
+
         </FormContainer>
       </Container>
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  }
+});
