@@ -94,7 +94,7 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
       headers: { 'Content-Type': 'multipart/form-data' },
 
   }).then(res => {
-      setNumberPods(res.data.photo.photo);
+      setNumberPods(res.data.imagefile);
   })
 
   };
@@ -120,6 +120,7 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
          <Text> {translate('CreatePlotStepSix.labelSwitch')} </Text>
 
           {!isEnabled ? (
+            <>
               <TextInput
               placeholder={translate('CreatePlotStepSix.samplePlaceholder')}
               label="CreatePlotStepSix.sampleA"
@@ -128,6 +129,8 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
               control={control}
               errorMessage={errors?.grainsPlant1?.message}
             />
+            <Text>{numberPods}</Text>
+            </>
           ) : (<PictureInput
           placeholder="newProperty.propertyPictureLabel"
           updatePictureLabel="newProperty.propertyUpdatePictureLabel"
