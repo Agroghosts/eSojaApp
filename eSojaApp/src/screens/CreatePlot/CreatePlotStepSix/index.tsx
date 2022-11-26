@@ -83,19 +83,19 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
   const handleSelectImage = async () => {
     const uri = await selectImage();
 
-    console.log();
-    alert(uri);
-    console.log(image);
+    //alert("OU AKI"+uri);
+    console.log("AKI"+image);
     setImage(uri);
 
     let formData = new FormData();
-    formData.append('numberPods', image);
-    await axios.post('http://localhost:5000/getPods', formData, {
+    formData.append('imagefile', image);
+    
+    const resp = await axios.post('http://10.0.2.2:5000/getPods', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
-
   }).then(res => {
-      setNumberPods(res.data.imagefile);
-  })
+      setNumberPods(res.data.foundPods);
+  });
+  
 
   };
 
@@ -129,14 +129,15 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
               control={control}
               errorMessage={errors?.grainsPlant1?.message}
             />
-            <Text>{numberPods}</Text>
             </>
-          ) : (<PictureInput
+          ) : (<> 
+          <PictureInput
           placeholder="newProperty.propertyPictureLabel"
           updatePictureLabel="newProperty.propertyUpdatePictureLabel"
           onPress={handleSelectImage}
-          uri={image}
-        />)
+          uri={image} />
+                   <Text>{numberPods} {translate('CreatePlotStepSix.foundPods')}</Text>
+        </>)
           }
           
           <Switch
