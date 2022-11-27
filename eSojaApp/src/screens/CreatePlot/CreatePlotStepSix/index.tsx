@@ -77,14 +77,9 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
   const [image, setImage] = useState('');
   const { selectImage } = useUpload();
   const [ numberPods, setNumberPods] = useState(''); 
-  const quality = async () => {
-    
-  }
+  const [ numberSeeds, setNumberSeeds] = useState(''); 
   const handleSelectImage = async () => {
     const uri = await selectImage();
-
-    //alert("OU AKI"+uri);
-    console.log("AKI"+image);
     setImage(uri);
 
     let formData = new FormData();
@@ -94,6 +89,7 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
       headers: { 'Content-Type': 'multipart/form-data' },
   }).then(res => {
       setNumberPods(res.data.foundPods);
+      setNumberSeeds(res.data.seedsInSoy);
   });
   
 
@@ -137,6 +133,9 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
           onPress={handleSelectImage}
           uri={image} />
                    <Text>{numberPods} {translate('CreatePlotStepSix.foundPods')}</Text>
+                   <Text>{numberSeeds} {translate('CreatePlotStepSix.foundSeeds')}</Text>
+                   
+
         </>)
           }
           
