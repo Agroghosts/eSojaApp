@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-import { ScrollView, Switch } from 'react-native';
+import { Alert, ScrollView, Switch } from 'react-native';
 import * as yup from 'yup';
 import { Button } from '../../../components/Button';
 import { StepIndicator } from '../../../components/StepIndicator';
@@ -18,6 +18,7 @@ import {
 import { PictureInput } from '../../../components/PictureInput';
 import { useUpload } from '../../../hooks/useUpload';
 import { Text } from 'react-native-paper';
+import axios from 'axios';
 
 const userLogin = yup.object().shape({
   grainsPlant1: yup
@@ -75,9 +76,23 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
 
   const [image, setImage] = useState('');
   const { selectImage } = useUpload();
+  const [ numberPods, setNumberPods] = useState(''); 
+  const [ numberSeeds, setNumberSeeds] = useState(''); 
   const handleSelectImage = async () => {
     const uri = await selectImage();
     setImage(uri);
+
+    let formData = new FormData();
+    formData.append('imagefile', image);
+    
+    const resp = await axios.post('http://10.0.2.2:5000/getPods', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+  }).then(res => {
+      setNumberPods(res.data.foundPods);
+      setNumberSeeds(res.data.seedsInSoy);
+  });
+  
+
   };
 
 
@@ -101,6 +116,7 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
          <Text> {translate('CreatePlotStepSix.labelSwitch')} </Text>
 
           {!isEnabled ? (
+            <>
               <TextInput
               placeholder={translate('CreatePlotStepSix.samplePlaceholder')}
               label="CreatePlotStepSix.sampleA"
@@ -109,12 +125,18 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
               control={control}
               errorMessage={errors?.grainsPlant1?.message}
             />
-          ) : (<PictureInput
+            </>
+          ) : (<> 
+          <PictureInput
           placeholder="newProperty.propertyPictureLabel"
           updatePictureLabel="newProperty.propertyUpdatePictureLabel"
           onPress={handleSelectImage}
-          uri={image}
-        />)
+          uri={image} />
+                   <Text>{numberPods} {translate('CreatePlotStepSix.foundPods')}</Text>
+                   <Text>{numberSeeds} {translate('CreatePlotStepSix.foundSeeds')}</Text>
+                   
+
+        </>)
           }
           
           <Switch
