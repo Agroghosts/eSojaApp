@@ -121,7 +121,7 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
               />
             </>
           ) : (
-            <View>
+            <View style={styles.centeredView}>
               <PictureInput
                 placeholder="newProperty.propertyPictureLabel"
                 updatePictureLabel="newProperty.propertyUpdatePictureLabel"
@@ -141,7 +141,15 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
           >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <Text style={styles.modalText}>Bota qualquer merda aqui pra servir de instrução</Text>
+                <Text style={styles.modalTitle}>
+                    INSTRUÇÕES
+                </Text>
+                <Text style={styles.modalText}>
+                  - Tire ou selecione uma foto com boa qualidade {'\n'}
+                  - A planta deve estar a pelo menos 2 metros de distância {'\n'}
+                  - A foto deve conter a planta inteira {'\n'}
+                  - As vagens devem estar visíveis
+                </Text>
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
                   onPress={() => setModalVisible(!modalVisible)}
@@ -170,12 +178,14 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
               errorMessage={errors?.grainsPlant2?.message}
             />
           ) : (
-            <PictureInput
-              placeholder="newProperty.propertyPictureLabel"
-              updatePictureLabel="newProperty.propertyUpdatePictureLabel"
-              onPress={handleSelectImage}
-              uri={image}
-            />
+            <View style={styles.centeredView}>
+              <PictureInput
+                placeholder="newProperty.propertyPictureLabel"
+                updatePictureLabel="newProperty.propertyUpdatePictureLabel"
+                onPress={handleSelectImage}
+                uri={image}
+              />
+            </View>
           )}
           <TextInput
             label="CreatePlotStepSix.sampleDescription"
@@ -237,6 +247,11 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   modalText: {
+    marginBottom: 15,
+    textAlign: 'left'
+  },
+  modalTitle: {
+    fontWeight: 'bold',
     marginBottom: 15,
     textAlign: 'center'
   },
