@@ -85,9 +85,12 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
   };
 
   const [image, setImage] = useState('');
+  const [imageb, setImageB] = useState('');
   const { selectImage } = useUpload();
   const [ numberPods, setNumberPods] = useState(''); 
   const [ numberSeeds, setNumberSeeds] = useState(''); 
+  const [ numberPodsb, setNumberPodsB] = useState(''); 
+  const [ numberSeedsb, setNumberSeedsB] = useState(''); 
   const handleSelectImage = async () => {
     const uri = await selectImage();
     setImage(uri);
@@ -101,9 +104,22 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
       setNumberPods(res.data.foundPods);
       setNumberSeeds(res.data.seedsInSoy);
   });
-  
-
   };
+  const handleSelectImageB = async () => {
+    const uri = await selectImage();
+    setImageB(uri);
+
+    let formData = new FormData();
+    formData.append('imagefile', imageb);
+    
+    const resp = await axios.post('http://10.0.2.2:5000/getPods', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+  }).then(res => {
+      setNumberPodsB(res.data.foundPods);
+      setNumberSeedsB(res.data.seedsInSoy);
+  });
+  };
+
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -143,6 +159,8 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
                 onPress={handleSelectImage}
                 uri={image}
               />
+              <Text>{numberPods} { numberPods ? translate('CreatePlotStepSix.foundPods') : ''}</Text>
+              <Text>{numberSeeds} { numberSeeds ? translate('CreatePlotStepSix.foundSeeds'): ''}</Text>
             </View>
           )}
           <Modal
@@ -197,53 +215,15 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
               <PictureInput
                 placeholder="newProperty.propertyPictureLabel"
                 updatePictureLabel="newProperty.propertyUpdatePictureLabel"
-                onPress={handleSelectImage}
-                uri={image}
+                onPress={handleSelectImageB}
+                uri={imageb}
               />
+              <Text>{numberPodsb} { numberPodsb ? translate('CreatePlotStepSix.foundPods'): ''}</Text>
+              <Text>{numberSeedsb} { numberSeedsb ? translate('CreatePlotStepSix.foundSeeds'): ''}</Text>
             </View>
-          )}
-          <TextInput
-            </>
-          ) : (<> 
-          <PictureInput
-          placeholder="newProperty.propertyPictureLabel"
-          updatePictureLabel="newProperty.propertyUpdatePictureLabel"
-          onPress={handleSelectImage}
-          uri={image} />
-                   <Text>{numberPods} {translate('CreatePlotStepSix.foundPods')}</Text>
-                   <Text>{numberSeeds} {translate('CreatePlotStepSix.foundSeeds')}</Text>
-                   
-
-        </>)
+          ) 
           }
-          
-          <Switch
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={isEnabledB ? "#f5dd4b" : "#f4f3f4"}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleSwitchB}
-        value={isEnabledB}
-        />
-         <Text> {translate('CreatePlotStepSix.labelSwitch')} </Text>
-        {!isEnabledB ? (
-            <TextInput
-            label="CreatePlotStepSix.sampleB"
-            placeholder={translate('CreatePlotStepSix.samplePlaceholder')}
-            icon="check-square"
-            name="grainsPlant2"
-            control={control}
-            errorMessage={errors?.grainsPlant2?.message}
-          />
-        ) : (
-                
-                <PictureInput
-                  placeholder="newProperty.propertyPictureLabel"
-                  updatePictureLabel="newProperty.propertyUpdatePictureLabel"
-                  onPress={handleSelectImage}
-                  uri={image}
-                />
-                
-        )}
+         
         <TextInput
             label="CreatePlotStepSix.sampleDescription"
             placeholder={translate(
