@@ -1,7 +1,15 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-import { Alert, ScrollView, Switch } from 'react-native';
+import {
+  ScrollView,
+  Switch,
+  StyleSheet,
+  Alert,
+  Modal,
+  Pressable,
+  View
+} from 'react-native';
 import * as yup from 'yup';
 import { Button } from '../../../components/Button';
 import { StepIndicator } from '../../../components/StepIndicator';
@@ -10,11 +18,7 @@ import Title from '../../../components/Title';
 import { CreatePlotStepSixScreenRouteProps } from '../../../data/routes/app';
 import { useSample } from '../../../hooks/useSample';
 import { translate } from '../../../data/I18n';
-import {
-  Container,
-  FormContainer,
-  NextStepButton,
-} from './styles';
+import { Container, FormContainer, NextStepButton } from './styles';
 import { PictureInput } from '../../../components/PictureInput';
 import { useUpload } from '../../../hooks/useUpload';
 import { Text } from 'react-native-paper';
@@ -69,10 +73,16 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
     navigation.navigate('CreatePlotStepSeven');
   };
   const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled((previousState: any) => !previousState);
+  const toggleSwitch = () => {
+    setIsEnabled((previousState: any) => !previousState);
+    setModalVisible(!isEnabled);
+  };
 
   const [isEnabledB, setIsEnabledB] = useState(false);
-  const toggleSwitchB = () => setIsEnabledB((previousState: any) => !previousState);
+  const toggleSwitchB = () => {
+    setIsEnabledB((previousState: any) => !previousState);
+    setModalVisible(!isEnabled);
+  };
 
   const [image, setImage] = useState('');
   const { selectImage } = useUpload();
@@ -95,6 +105,7 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
 
   };
 
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <ScrollView>
@@ -105,26 +116,93 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
         />
         <StepIndicator step={1} indicator={4} />
         <FormContainer>
-
           <Switch
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleSwitch}
-        value={isEnabled}
-        />
-         <Text> {translate('CreatePlotStepSix.labelSwitch')} </Text>
-
+            trackColor={{ false: '#767577', true: '#81b0ff' }}
+            thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={toggleSwitch}
+            value={isEnabled}
+          />
+          <Text> {translate('CreatePlotStepSix.labelSwitch')} </Text>
           {!isEnabled ? (
             <>
               <TextInput
+                placeholder={translate('CreatePlotStepSix.samplePlaceholder')}
+                label="CreatePlotStepSix.sampleA"
+                icon="check-square"
+                name="grainsPlant1"
+                control={control}
+                errorMessage={errors?.grainsPlant1?.message}
+              />
+            </>
+          ) : (
+            <View style={styles.centeredView}>
+              <PictureInput
+                placeholder="newProperty.propertyPictureLabel"
+                updatePictureLabel="newProperty.propertyUpdatePictureLabel"
+                onPress={handleSelectImage}
+                uri={image}
+              />
+            </View>
+          )}
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalTitle}>
+                    INSTRUÇÕES
+                </Text>
+                <Text style={styles.modalText}>
+                  - Tire ou selecione uma foto com boa qualidade {'\n'}
+                  - A planta deve estar a pelo menos 2 metros de distância {'\n'}
+                  - A foto deve conter a planta inteira {'\n'}
+                  - As vagens devem estar visíveis
+                </Text>
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  <Text style={styles.textStyle}>Fechar</Text>
+                </Pressable>
+              </View>
+            </View>
+          </Modal>
+          <Switch
+            trackColor={{ false: '#767577', true: '#81b0ff' }}
+            thumbColor={isEnabledB ? '#f5dd4b' : '#f4f3f4'}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={toggleSwitchB}
+            value={isEnabledB}
+          />
+          <Text> {translate('CreatePlotStepSix.labelSwitch')} </Text>
+
+          {!isEnabledB ? (
+            <TextInput
+              label="CreatePlotStepSix.sampleB"
               placeholder={translate('CreatePlotStepSix.samplePlaceholder')}
-              label="CreatePlotStepSix.sampleA"
               icon="check-square"
-              name="grainsPlant1"
+              name="grainsPlant2"
               control={control}
-              errorMessage={errors?.grainsPlant1?.message}
+              errorMessage={errors?.grainsPlant2?.message}
             />
+          ) : (
+            <View style={styles.centeredView}>
+              <PictureInput
+                placeholder="newProperty.propertyPictureLabel"
+                updatePictureLabel="newProperty.propertyUpdatePictureLabel"
+                onPress={handleSelectImage}
+                uri={image}
+              />
+            </View>
+          )}
+          <TextInput
             </>
           ) : (<> 
           <PictureInput
@@ -186,3 +264,55 @@ export const CreatePlotStepSix: React.FC<CreatePlotStepSixScreenRouteProps> = ({
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF'
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3'
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'left'
+  },
+  modalTitle: {
+    fontWeight: 'bold',
+    marginBottom: 15,
+    textAlign: 'center'
+  },
+  PictureInput: {
+    alignItems: 'center'
+  }
+});

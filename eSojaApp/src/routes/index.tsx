@@ -27,8 +27,12 @@ export const Routes: React.FC = () => {
 
   return (
     <BaseNavigationContainer>
-      { !authUser.id ? (
-        <AuthRoutes screenOptions={screenOptions} />
+      {!authUser.id ? (
+        <>
+          {//<AuthRoutes screenOptions={screenOptions} /> 
+          }
+          <AppRoutes screenOptions={screenOptions} />
+        </>
       ) : (
         <>
           <StatusBar backgroundColor={theme.colors.primary} translucent />
